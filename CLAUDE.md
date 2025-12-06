@@ -171,6 +171,51 @@ Item images: `https://web.poecdn.com/image/Art/2DItems/...`
 - **Database**: Vercel Postgres or Turso (SQLite edge)
 - **Hosting**: Vercel
 
+## Code Architecture
+
+```
+src/
+├── lib/
+│   └── poe-api.ts           # Low-level API client (PoeApiClient class)
+├── services/
+│   └── poe.ts               # Data fetching + parsing logic
+├── hooks/
+│   └── usePoeData.ts        # React Query hooks for client-side fetching
+├── providers/
+│   └── QueryProvider.tsx    # React Query provider
+├── components/
+│   ├── CharacterPaperdoll.tsx
+│   ├── CharacterSelector.tsx
+│   ├── CurrencySummary.tsx
+│   ├── ItemTooltip.tsx
+│   └── RefreshButton.tsx
+└── app/
+    ├── api/poe/route.ts     # API route for client-side fetching
+    ├── layout.tsx           # Root layout with QueryProvider
+    └── page.tsx             # Dashboard page
+```
+
+### Data Flow
+
+**Server components** (default): Call services directly
+```
+page.tsx → services/poe.ts → lib/poe-api.ts → PoE API
+```
+
+**Client components** ("use client"): Use hooks via API route
+```
+Component → usePoeData hook → /api/poe route → services → PoE API
+```
+
+Why? Client components can't access `process.env.POE_SESSION_ID` (security).
+The API route acts as a proxy, keeping credentials server-side.
+
+### Adding New Pages
+
+1. For server-rendered pages: Import from `@/services/poe`
+2. For client interactivity: Use hooks from `@/hooks/usePoeData`
+3. Data is cached by React Query (5 min stale time)
+
 ## Commands
 
 ```bash
