@@ -126,12 +126,48 @@ Recommended format: `AppName/version (contact: email@example.com)`
 - SSF Character: `bsss_now` (Juggernaut Lv89, SSF Keepers)
 - Stash tabs: 18
 
+## Pages Structure
+
+```
+/                  → Dashboard (START HERE)
+                     - Character selector dropdown
+                     - Character paperdoll (equipped gear)
+                     - Currency summary (Divine/Chaos/etc)
+                     - Quick stats
+
+/characters        → Character list + detailed view
+/stash             → Stash browser with tabs
+/crafting          → Crafting helper (later)
+/history           → Progress over time (later)
+/auth/callback     → OAuth callback
+```
+
+## Character Paperdoll UI
+
+Equipment slots layout:
+```
+        [Helmet]
+[Weapon] [Body] [Off-hand]
+ [Gloves] [Belt] [Boots]
+  [Ring1] [Amulet] [Ring2]
+       [Flask x5]
+```
+
+Item rarity colors:
+- Normal: #c8c8c8 (gray)
+- Magic: #8888ff (blue)
+- Rare: #ffff77 (yellow)
+- Unique: #af6025 (orange)
+
+Item images: `https://web.poecdn.com/image/Art/2DItems/...`
+
 ## Tech Stack
 
 - **Runtime**: Bun
 - **Framework**: Next.js (App Router)
 - **Language**: TypeScript
 - **Styling**: Tailwind CSS
+- **Data Fetching**: @tanstack/react-query
 - **Database**: Vercel Postgres or Turso (SQLite edge)
 - **Hosting**: Vercel
 
